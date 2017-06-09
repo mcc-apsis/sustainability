@@ -1,0 +1,514 @@
+###################################
+Starting     NMF.py with ngrams=1 and n_features=50000
+79994 documents found
+Extracting tf-idf features for NMF...
+done in 369.374s.
+15014
+Adding features to db
+done in 73.596s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 252.730s.
+Adding topicterms to db
+done in 20.713s.
+making sparse matrix
+done in 7.834s.
+adding 1136829 doctopics to the db
+done in 2362.485s.
+Making the objects took in 167.629s.
+Adding the objects took in 2188.268s.
+updating features in db
+done in 66.745s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 405.964s.
+Adding topicterms to db
+done in 12.627s.
+making sparse matrix
+done in 9.087s.
+adding 1259676 doctopics to the db
+done in 3395.097s.
+Making the objects took in 202.607s.
+Adding the objects took in 3184.884s.
+updating features in db
+done in 65.194s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 500.154s.
+Adding topicterms to db
+done in 12.680s.
+making sparse matrix
+done in 12.734s.
+adding 1394593 doctopics to the db
+done in 2962.769s.
+Making the objects took in 202.508s.
+Adding the objects took in 2752.212s.
+updating features in db
+done in 47.779s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 576.908s.
+Adding topicterms to db
+done in 12.276s.
+making sparse matrix
+done in 12.189s.
+adding 1432512 doctopics to the db
+done in 3233.187s.
+Making the objects took in 217.188s.
+Adding the objects took in 3007.578s.
+updating features in db
+done in 77.617s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 675.554s.
+Adding topicterms to db
+done in 13.509s.
+making sparse matrix
+done in 14.560s.
+adding 1490936 doctopics to the db
+done in 3421.410s.
+Making the objects took in 219.301s.
+Adding the objects took in 3193.475s.
+updating features in db
+done in 80.534s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 751.074s.
+Adding topicterms to db
+done in 13.666s.
+making sparse matrix
+done in 16.298s.
+adding 1590165 doctopics to the db
+107
+done! total time: 0 minutes and 11.07 seconds
+a maximum of 551.74 MB was used
+108
+done! total time: 0 minutes and 14.25 seconds
+a maximum of 610.332 MB was used
+109
+done! total time: 0 minutes and 17.7 seconds
+a maximum of 641.588 MB was used
+110
+done! total time: 0 minutes and 21.11 seconds
+a maximum of 673.232 MB was used
+111
+done! total time: 0 minutes and 26.03 seconds
+a maximum of 701.892 MB was used
+112
+done! total time: 0 minutes and 30.58 seconds
+a maximum of 737.144 MB was used
+107
+108
+109
+110
+111
+112
+done in 3690.816s.
+Making the objects took in 234.484s.
+Adding the objects took in 3447.074s.
+done! total time: 391 minutes and 48 seconds
+a maximum of 937.352 MB was used
+finished sleeping
+###################################
+Starting     NMF.py with ngrams=1 and n_features=50000
+79994 documents found
+Extracting tf-idf features for NMF...
+done in 370.819s.
+15014
+Adding features to db
+done in 74.529s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 38.850s.
+Adding topicterms to db
+done in 7.143s.
+making sparse matrix
+done in 1.176s.
+adding 398612 doctopics to the db
+done in 941.554s.
+Making the objects took in 52.655s.
+Adding the objects took in 886.645s.
+updating features in db
+done in 80.859s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 75.409s.
+Adding topicterms to db
+done in 7.741s.
+making sparse matrix
+done in 2.641s.
+adding 667013 doctopics to the db
+done in 1453.040s.
+Making the objects took in 94.902s.
+Adding the objects took in 1354.148s.
+updating features in db
+done in 78.220s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 169.443s.
+Adding topicterms to db
+done in 8.810s.
+making sparse matrix
+done in 4.899s.
+adding 855107 doctopics to the db
+done in 1897.747s.
+Making the objects took in 123.530s.
+Adding the objects took in 1769.081s.
+updating features in db
+done in 77.880s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 229.262s.
+Adding topicterms to db
+done in 10.342s.
+making sparse matrix
+done in 4.955s.
+adding 964685 doctopics to the db
+done in 2343.661s.
+Making the objects took in 150.088s.
+Adding the objects took in 2184.978s.
+updating features in db
+done in 71.367s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 554.227s.
+Adding topicterms to db
+done in 13.206s.
+making sparse matrix
+done in 17.644s.
+adding 1655419 doctopics to the db
+done in 4016.911s.
+Making the objects took in 259.909s.
+Adding the objects took in 3747.931s.
+updating features in db
+done in 75.860s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 953.635s.
+Adding topicterms to db
+done in 13.283s.
+making sparse matrix
+done in 21.002s.
+adding 1739834 doctopics to the db
+done in 4221.004s.
+Making the objects took in 275.908s.
+Adding the objects took in 3935.556s.
+updating features in db
+done in 79.044s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 957.698s.
+Adding topicterms to db
+done in 13.798s.
+making sparse matrix
+done in 20.233s.
+adding 1770363 doctopics to the db
+done in 4369.586s.
+Making the objects took in 278.446s.
+Adding the objects took in 4081.569s.
+updating features in db
+done in 76.961s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 757.938s.
+Adding topicterms to db
+done in 14.622s.
+making sparse matrix
+done in 27.007s.
+adding 1828320 doctopics to the db
+done in 4506.406s.
+Making the objects took in 302.798s.
+Adding the objects took in 4193.590s.
+updating features in db
+done in 90.359s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 933.630s.
+Adding topicterms to db
+done in 14.210s.
+making sparse matrix
+done in 21.946s.
+adding 1901709 doctopics to the db
+{'years': range(0, 1985), 'n': 0, 'name': 'AR0'}
+{'years': range(1985, 1991), 'n': 1, 'name': 'AR1'}
+{'years': range(1991, 1995), 'n': 2, 'name': 'AR2'}
+{'years': range(1995, 2001), 'n': 3, 'name': 'AR3'}
+{'years': range(2001, 2008), 'n': 4, 'name': 'AR4'}
+{'years': range(2008, 2014), 'n': 5, 'name': 'AR5'}
+{'years': range(2014, 9999), 'n': 6, 'name': 'AR6'}
+done! total time: 3 minutes and 28.07 seconds
+a maximum of 450.884 MB was used
+{'years': range(0, 1985), 'n': 0, 'name': 'AR0'}
+{'years': range(1985, 1991), 'n': 1, 'name': 'AR1'}
+{'years': range(1991, 1995), 'n': 2, 'name': 'AR2'}
+{'years': range(1995, 2001), 'n': 3, 'name': 'AR3'}
+{'years': range(2001, 2008), 'n': 4, 'name': 'AR4'}
+{'years': range(2008, 2014), 'n': 5, 'name': 'AR5'}
+{'years': range(2014, 9999), 'n': 6, 'name': 'AR6'}
+done! total time: 0 minutes and 9.28 seconds
+a maximum of 190.768 MB was used
+{'years': range(0, 1985), 'name': 'AR0', 'n': 0}
+{'years': range(1985, 1991), 'name': 'AR1', 'n': 1}
+{'years': range(1991, 1995), 'name': 'AR2', 'n': 2}
+{'years': range(1995, 2001), 'name': 'AR3', 'n': 3}
+{'years': range(2001, 2008), 'name': 'AR4', 'n': 4}
+{'years': range(2008, 2014), 'name': 'AR5', 'n': 5}
+{'years': range(2014, 9999), 'name': 'AR6', 'n': 6}
+done! total time: 0 minutes and 15.65 seconds
+a maximum of 232.104 MB was used
+{'n': 0, 'name': 'AR0', 'years': range(0, 1985)}
+{'n': 1, 'name': 'AR1', 'years': range(1985, 1991)}
+{'n': 2, 'name': 'AR2', 'years': range(1991, 1995)}
+{'n': 3, 'name': 'AR3', 'years': range(1995, 2001)}
+{'n': 4, 'name': 'AR4', 'years': range(2001, 2008)}
+{'n': 5, 'name': 'AR5', 'years': range(2008, 2014)}
+{'n': 6, 'name': 'AR6', 'years': range(2014, 9999)}
+done! total time: 0 minutes and 23.75 seconds
+a maximum of 264.68 MB was used
+{'name': 'AR0', 'n': 0, 'years': range(0, 1985)}
+{'name': 'AR1', 'n': 1, 'years': range(1985, 1991)}
+{'name': 'AR2', 'n': 2, 'years': range(1991, 1995)}
+{'name': 'AR3', 'n': 3, 'years': range(1995, 2001)}
+{'name': 'AR4', 'n': 4, 'years': range(2001, 2008)}
+{'name': 'AR5', 'n': 5, 'years': range(2008, 2014)}
+{'name': 'AR6', 'n': 6, 'years': range(2014, 9999)}
+done! total time: 0 minutes and 34.36 seconds
+a maximum of 291.228 MB was used
+{'n': 0, 'name': 'AR0', 'years': range(0, 1985)}
+{'n': 1, 'name': 'AR1', 'years': range(1985, 1991)}
+{'n': 2, 'name': 'AR2', 'years': range(1991, 1995)}
+{'n': 3, 'name': 'AR3', 'years': range(1995, 2001)}
+{'n': 4, 'name': 'AR4', 'years': range(2001, 2008)}
+{'n': 5, 'name': 'AR5', 'years': range(2008, 2014)}
+{'n': 6, 'name': 'AR6', 'years': range(2014, 9999)}
+done! total time: 3 minutes and 48.28 seconds
+a maximum of 460.736 MB was used
+{'name': 'AR0', 'n': 0, 'years': range(0, 1985)}
+{'name': 'AR1', 'n': 1, 'years': range(1985, 1991)}
+{'name': 'AR2', 'n': 2, 'years': range(1991, 1995)}
+{'name': 'AR3', 'n': 3, 'years': range(1995, 2001)}
+{'name': 'AR4', 'n': 4, 'years': range(2001, 2008)}
+{'name': 'AR5', 'n': 5, 'years': range(2008, 2014)}
+{'name': 'AR6', 'n': 6, 'years': range(2014, 9999)}
+done! total time: 2 minutes and 37.09 seconds
+a maximum of 420.76 MB was used
+{'years': range(0, 1985), 'name': 'AR0', 'n': 0}
+{'years': range(1985, 1991), 'name': 'AR1', 'n': 1}
+{'years': range(1991, 1995), 'name': 'AR2', 'n': 2}
+{'years': range(1995, 2001), 'name': 'AR3', 'n': 3}
+{'years': range(2001, 2008), 'name': 'AR4', 'n': 4}
+{'years': range(2008, 2014), 'name': 'AR5', 'n': 5}
+{'years': range(2014, 9999), 'name': 'AR6', 'n': 6}
+done! total time: 2 minutes and 57.26 seconds
+a maximum of 439.444 MB was used
+{'n': 0, 'name': 'AR0', 'years': range(0, 1985)}
+{'n': 1, 'name': 'AR1', 'years': range(1985, 1991)}
+{'n': 2, 'name': 'AR2', 'years': range(1991, 1995)}
+{'n': 3, 'name': 'AR3', 'years': range(1995, 2001)}
+{'n': 4, 'name': 'AR4', 'years': range(2001, 2008)}
+{'n': 5, 'name': 'AR5', 'years': range(2008, 2014)}
+{'n': 6, 'name': 'AR6', 'years': range(2014, 9999)}
+done! total time: 8 minutes and 31.99 seconds
+a maximum of 483.884 MB was used
+119
+113
+114
+115
+116
+120
+117
+118
+121
+done in 4855.114s.
+Making the objects took in 328.920s.
+Adding the objects took in 4515.808s.
+done! total time: 905 minutes and 35 seconds
+a maximum of 1151.304 MB was used
+finished sleeping
+###################################
+Starting     NMF.py with ngrams=1 and n_features=50000
+79994 documents found
+Extracting tf-idf features for NMF...
+done in 361.853s.
+15014
+Adding features to db
+done in 73.301s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1446.552s.
+Adding topicterms to db
+done in 15.308s.
+making sparse matrix
+done in 28.317s.
+adding 2002134 doctopics to the db
+done in 6979.917s.
+Making the objects took in 329.029s.
+Adding the objects took in 6638.619s.
+updating features in db
+done in 81.755s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1084.831s.
+Adding topicterms to db
+done in 14.733s.
+making sparse matrix
+done in 33.940s.
+adding 1985027 doctopics to the db
+done in 5392.490s.
+Making the objects took in 293.570s.
+Adding the objects took in 5088.577s.
+updating features in db
+done in 80.071s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 794.140s.
+Adding topicterms to db
+done in 15.454s.
+making sparse matrix
+done in 31.232s.
+adding 2034317 doctopics to the db
+done in 5498.467s.
+Making the objects took in 312.843s.
+Adding the objects took in 5174.769s.
+updating features in db
+done in 76.912s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1658.890s.
+Adding topicterms to db
+done in 16.350s.
+making sparse matrix
+done in 33.907s.
+adding 2101323 doctopics to the db
+done in 6987.065s.
+Making the objects took in 347.851s.
+Adding the objects took in 6627.373s.
+updating features in db
+done in 87.295s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1704.157s.
+Adding topicterms to db
+done in 16.333s.
+making sparse matrix
+done in 38.191s.
+adding 2139472 doctopics to the db
+{'years': range(0, 1985), 'name': 'AR0', 'n': 0}
+{'years': range(1985, 1991), 'name': 'AR1', 'n': 1}
+{'years': range(1991, 1995), 'name': 'AR2', 'n': 2}
+{'years': range(1995, 2001), 'name': 'AR3', 'n': 3}
+{'years': range(2001, 2008), 'name': 'AR4', 'n': 4}
+{'years': range(2008, 2014), 'name': 'AR5', 'n': 5}
+{'years': range(2014, 9999), 'name': 'AR6', 'n': 6}
+done! total time: 5 minutes and 8.24 seconds
+a maximum of 503.684 MB was used
+{'years': range(0, 1985), 'n': 0, 'name': 'AR0'}
+{'years': range(1985, 1991), 'n': 1, 'name': 'AR1'}
+{'years': range(1991, 1995), 'n': 2, 'name': 'AR2'}
+{'years': range(1995, 2001), 'n': 3, 'name': 'AR3'}
+{'years': range(2001, 2008), 'n': 4, 'name': 'AR4'}
+{'years': range(2008, 2014), 'n': 5, 'name': 'AR5'}
+{'years': range(2014, 9999), 'n': 6, 'name': 'AR6'}
+done! total time: 6 minutes and 8.63 seconds
+a maximum of 514.612 MB was used
+{'years': range(0, 1985), 'n': 0, 'name': 'AR0'}
+{'years': range(1985, 1991), 'n': 1, 'name': 'AR1'}
+{'years': range(1991, 1995), 'n': 2, 'name': 'AR2'}
+{'years': range(1995, 2001), 'n': 3, 'name': 'AR3'}
+{'years': range(2001, 2008), 'n': 4, 'name': 'AR4'}
+{'years': range(2008, 2014), 'n': 5, 'name': 'AR5'}
+{'years': range(2014, 9999), 'n': 6, 'name': 'AR6'}
+done! total time: 4 minutes and 30.13 seconds
+a maximum of 497.868 MB was used
+{'n': 0, 'years': range(0, 1985), 'name': 'AR0'}
+{'n': 1, 'years': range(1985, 1991), 'name': 'AR1'}
+{'n': 2, 'years': range(1991, 1995), 'name': 'AR2'}
+{'n': 3, 'years': range(1995, 2001), 'name': 'AR3'}
+{'n': 4, 'years': range(2001, 2008), 'name': 'AR4'}
+{'n': 5, 'years': range(2008, 2014), 'name': 'AR5'}
+{'n': 6, 'years': range(2014, 9999), 'name': 'AR6'}
+done! total time: 6 minutes and 50.04 seconds
+a maximum of 533.208 MB was used
+{'n': 0, 'years': range(0, 1985), 'name': 'AR0'}
+{'n': 1, 'years': range(1985, 1991), 'name': 'AR1'}
+{'n': 2, 'years': range(1991, 1995), 'name': 'AR2'}
+{'n': 3, 'years': range(1995, 2001), 'name': 'AR3'}
+{'n': 4, 'years': range(2001, 2008), 'name': 'AR4'}
+{'n': 5, 'years': range(2008, 2014), 'name': 'AR5'}
+{'n': 6, 'years': range(2014, 9999), 'name': 'AR6'}
+done! total time: 7 minutes and 1.47 seconds
+a maximum of 546.776 MB was used
+126
+127
+125
+128
+129
+done in 5861.579s.
+Making the objects took in 341.369s.
+Adding the objects took in 5508.479s.
+done! total time: 975 minutes and 55 seconds
+a maximum of 1305.044 MB was used
+finished sleeping
+###################################
+Starting     NMF.py with ngrams=1 and n_features=50000
+79994 documents found
+Extracting tf-idf features for NMF...
+done in 364.385s.
+15014
+Adding features to db
+done in 53.942s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1989.272s.
+Adding topicterms to db
+done in 28.155s.
+making sparse matrix
+done in 57.253s.
+adding 2182853 doctopics to the db
+done in 6115.892s.
+Making the objects took in 340.458s.
+Adding the objects took in 5762.238s.
+updating features in db
+done in 81.674s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 1637.797s.
+Adding topicterms to db
+done in 18.923s.
+making sparse matrix
+done in 55.486s.
+adding 2199580 doctopics to the db
+done in 6190.366s.
+Making the objects took in 343.451s.
+Adding the objects took in 5833.687s.
+updating features in db
+done in 82.525s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 2362.896s.
+Adding topicterms to db
+done in 18.186s.
+making sparse matrix
+done in 61.854s.
+adding 2166721 doctopics to the db
+done in 7734.374s.
+Making the objects took in 351.553s.
+Adding the objects took in 7369.389s.
+updating features in db
+done in 97.135s.
+Fitting the NMF model with tf-idf features, n_samples=1000 and n_features=50000...
+done in 2663.215s.
+Adding topicterms to db
+done in 18.467s.
+making sparse matrix
+done in 68.428s.
+adding 2098610 doctopics to the db
+Process ForkPoolWorker-2703:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/pool.py", line 125, in worker
+    put((job, i, result))
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/queues.py", line 367, in put
+    self._writer.send_bytes(obj)
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 413, in _send_bytes
+    self._send(chunk)
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 369, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/process.py", line 254, in _bootstrap
+    self.run()
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/process.py", line 93, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/pool.py", line 130, in worker
+    put((job, i, (False, wrapped)))
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/queues.py", line 367, in put
+    self._writer.send_bytes(obj)
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 413, in _send_bytes
+    self._send(chunk)
+  File "/usr/local/lib/python3.4/dist-packages/multiprocess/connection.py", line 369, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
