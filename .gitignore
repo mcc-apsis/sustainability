@@ -1,1 +1,4 @@
 *.ipynb_checkpoints*
+dtm-output/*
+dtm-input/*
+networks/*

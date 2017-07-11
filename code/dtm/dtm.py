@@ -119,188 +119,189 @@ def main():
         print("please provide a query ID!")
         sys.exit()
 
-    sleep(7200)
-    K = 80
-    n_features=20000
+    #sleep(7200)
+    for K in [40,60,80,100]:
+        #K = 80
+        n_features=20000
 
-    global run_id
-    run_id = db.init(n_features,1)
+        global run_id
+        run_id = db.init(n_features,1)
 
-    stat = RunStats.objects.get(pk=run_id)
-    stat.method='BD'
-    stat.save()
-    stat.query=qid
+        stat = RunStats.objects.get(pk=run_id)
+        stat.method='BD'
+        stat.save()
+        stat.query=Query.objects.get(pk=qid)
 
-    ##########################
-    ## create input folder
+        ##########################
+        ## create input folder
 
-    if (os.path.isdir('dtm-input')):
-    	shutil.rmtree('dtm-input')
+        if (os.path.isdir('dtm-input')):
+        	shutil.rmtree('dtm-input')
 
-    os.mkdir('dtm-input')
+        os.mkdir('dtm-input')
 
-    yrange = list(range(1990,2017))
-    #yrange = list(range(1990,1997))
+        yrange = list(range(1990,2017))
+        #yrange = list(range(1990,1997))
 
-    docs = Doc.objects.filter(
-        query=qid,
-        content__iregex='\w',
-        PY__in=yrange
-    ).order_by('PY')
+        docs = Doc.objects.filter(
+            query=Query.objects.get(pk=qid),
+            content__iregex='\w',
+            PY__in=yrange
+        ).order_by('PY')
 
-    abstracts, docsizes, ids, stoplist, PYs = proc_docs(docs)
+        abstracts, docsizes, ids, stoplist, PYs = proc_docs(docs)
 
-    #########################
-    ## Get the features now
-    print("Extracting tf-idf features for NMF...")
-    vectorizer = CountVectorizer(max_df=0.95, min_df=10,
-                                       max_features=n_features,
-                                       ngram_range=(1,1),
-                                       tokenizer=snowball_stemmer(),
-                                       stop_words=stoplist)
-    t0 = time()
-    dtm = vectorizer.fit_transform(abstracts)
+        #########################
+        ## Get the features now
+        print("Extracting tf-idf features for NMF...")
+        vectorizer = CountVectorizer(max_df=0.95, min_df=10,
+                                           max_features=n_features,
+                                           ngram_range=(1,1),
+                                           tokenizer=snowball_stemmer(),
+                                           stop_words=stoplist)
+        t0 = time()
+        dtm = vectorizer.fit_transform(abstracts)
 
-    print("done in %0.3fs." % (time() - t0))
+        print("done in %0.3fs." % (time() - t0))
 
-    del abstracts
+        del abstracts
 
-    gc.collect()
+        gc.collect()
 
-    # Get the vocab, add it to db
-    vocab = vectorizer.get_feature_names()
-    vocab_ids = []
-    pool = Pool(processes=8)
-    vocab_ids.append(pool.map(add_features,vocab))
-    pool.terminate()
-    del vocab
-    vocab_ids = vocab_ids[0]
-
-    django.db.connections.close_all()
-
-    with open('dtm-input/foo-mult.dat','w') as mult:
-        for d in range(dtm.shape[0]):
-            words = find(dtm[d])
-            uwords = len(words[0])
-            mult.write(str(uwords) + " ")
-            for w in range(uwords):
-                index = words[1][w]
-                count = words[2][w]
-                mult.write(str(index)+":"+str(count)+" ")
-            mult.write('\n')
-
-
-    ##########################
-    ##put PY stuff in the seq file
-
-    ycounts = docs.values('PY').annotate(
-        count = models.Count('pk')
-    )
-
-    with open('dtm-input/foo-seq.dat','w') as seq:
-        seq.write(str(len(yrange)))
-
-        for y in ycounts:
-            seq.write('\n')
-            seq.write(str(y['count']))
-
-    ##########################
-    # Run the dtm
-    subprocess.Popen([
-        "/home/galm/software/dtm/dtm/main",
-        "--ntopics={}".format(K),
-        "--mode=fit",
-        "--rng_seed=0",
-        "--initialize_lda=true",
-        "--corpus_prefix=/home/galm/projects/sustainability/dtm-input/foo",
-        "--outname=/home/galm/projects/sustainability/dtm-output",
-        "--top_chain_var=0.005",
-        "--alpha=0.01",
-        "--lda_sequence_min_iter=6",
-        "--lda_sequence_max_iter=10",
-        "--lda_max_em_iter=10"
-    ]).wait()
-
-
-
-
-    ##########################
-    ## Upload the dtm results to the db
-
-    info = readInfo("dtm-output/lda-seq/info.dat")
-
-    topic_ids = db.add_topics(K)
-
-    #################################
-    # TopicTerms
-
-    topics = range(info['NUM_TOPICS'])
-    pool = Pool(processes=8)
-    pool.map(partial(
-        dtm_topic,
-        info=info,
-        topic_ids=topic_ids,
-        vocab_ids=vocab_ids,
-        ys = yrange
-    ),topics)
-    pool.terminate()
-    gc.collect()
-
-
-    ######################################
-    # Doctopics
-    gamma = np.fromfile('dtm-output/lda-seq/gam.dat', dtype=float,sep=" ")
-    gamma = gamma.reshape((len(gamma)/info['NUM_TOPICS'],info['NUM_TOPICS']))
-
-    gamma = find(csr_matrix(gamma))
-    glength = len(gamma[0])
-    chunk_size = 100000
-    ps = 16
-    parallel_add = True
-
-    all_dts = []
-
-    make_t = 0
-    add_t = 0
-
-    def insert_many(values_list):
-        query='''
-            INSERT INTO "tmv_app_doctopic"
-            ("doc_id", "topic_id", "score", "scaled_score", "run_id")
-            VALUES (%s,%s,%s,%s,%s)
-        '''
-        cursor = connection.cursor()
-        cursor.executemany(query,values_list)
-
-    for i in range(glength//chunk_size+1):
-        dts = []
-        values_list = []
-        f = i*chunk_size
-        l = (i+1)*chunk_size
-        if l > glength:
-            l = glength
-        docs = range(f,l)
-        doc_batches = []
-        for p in range(ps):
-            doc_batches.append([x for x in docs if x % ps == p])
-        pool = Pool(processes=ps)
-        make_t0 = time()
-        values_list.append(pool.map(partial(f_gamma2, gamma=gamma,
-                        docsizes=docsizes,docUTset=ids,topic_ids=topic_ids),doc_batches))
-        #dts.append(pool.map(partial(f_gamma, gamma=gamma,
-        #                docsizes=docsizes,docUTset=ids,topic_ids=topic_ids),doc_batches))
+        # Get the vocab, add it to db
+        vocab = vectorizer.get_feature_names()
+        vocab_ids = []
+        pool = Pool(processes=8)
+        vocab_ids.append(pool.map(add_features,vocab))
         pool.terminate()
-        make_t += time() - make_t0
+        del vocab
+        vocab_ids = vocab_ids[0]
+
         django.db.connections.close_all()
 
-        add_t0 = time()
-        values_list = [item for sublist in values_list for item in sublist]
-        pool = Pool(processes=ps)
-        pool.map(insert_many,values_list)
+        with open('dtm-input/foo-mult.dat','w') as mult:
+            for d in range(dtm.shape[0]):
+                words = find(dtm[d])
+                uwords = len(words[0])
+                mult.write(str(uwords) + " ")
+                for w in range(uwords):
+                    index = words[1][w]
+                    count = words[2][w]
+                    mult.write(str(index)+":"+str(count)+" ")
+                mult.write('\n')
+
+
+        ##########################
+        ##put PY stuff in the seq file
+
+        ycounts = docs.values('PY').annotate(
+            count = models.Count('pk')
+        )
+
+        with open('dtm-input/foo-seq.dat','w') as seq:
+            seq.write(str(len(yrange)))
+
+            for y in ycounts:
+                seq.write('\n')
+                seq.write(str(y['count']))
+
+        ##########################
+        # Run the dtm
+        subprocess.Popen([
+            "/home/galm/software/dtm/dtm/main",
+            "--ntopics={}".format(K),
+            "--mode=fit",
+            "--rng_seed=0",
+            "--initialize_lda=true",
+            "--corpus_prefix=/home/galm/projects/sustainability/dtm-input/foo",
+            "--outname=/home/galm/projects/sustainability/dtm-output",
+            "--top_chain_var=0.005",
+            "--alpha=0.01",
+            "--lda_sequence_min_iter=10",
+            "--lda_sequence_max_iter=200",
+            "--lda_max_em_iter=20"
+        ]).wait()
+
+
+
+
+        ##########################
+        ## Upload the dtm results to the db
+
+        info = readInfo("dtm-output/lda-seq/info.dat")
+
+        topic_ids = db.add_topics(K)
+
+        #################################
+        # TopicTerms
+
+        topics = range(info['NUM_TOPICS'])
+        pool = Pool(processes=8)
+        pool.map(partial(
+            dtm_topic,
+            info=info,
+            topic_ids=topic_ids,
+            vocab_ids=vocab_ids,
+            ys = yrange
+        ),topics)
         pool.terminate()
-        add_t += time() - add_t0
         gc.collect()
-        sys.stdout.flush()
+
+
+        ######################################
+        # Doctopics
+        gamma = np.fromfile('dtm-output/lda-seq/gam.dat', dtype=float,sep=" ")
+        gamma = gamma.reshape((len(gamma)/info['NUM_TOPICS'],info['NUM_TOPICS']))
+
+        gamma = find(csr_matrix(gamma))
+        glength = len(gamma[0])
+        chunk_size = 100000
+        ps = 16
+        parallel_add = True
+
+        all_dts = []
+
+        make_t = 0
+        add_t = 0
+
+        def insert_many(values_list):
+            query='''
+                INSERT INTO "tmv_app_doctopic"
+                ("doc_id", "topic_id", "score", "scaled_score", "run_id")
+                VALUES (%s,%s,%s,%s,%s)
+            '''
+            cursor = connection.cursor()
+            cursor.executemany(query,values_list)
+
+        for i in range(glength//chunk_size+1):
+            dts = []
+            values_list = []
+            f = i*chunk_size
+            l = (i+1)*chunk_size
+            if l > glength:
+                l = glength
+            docs = range(f,l)
+            doc_batches = []
+            for p in range(ps):
+                doc_batches.append([x for x in docs if x % ps == p])
+            pool = Pool(processes=ps)
+            make_t0 = time()
+            values_list.append(pool.map(partial(f_gamma2, gamma=gamma,
+                            docsizes=docsizes,docUTset=ids,topic_ids=topic_ids),doc_batches))
+            #dts.append(pool.map(partial(f_gamma, gamma=gamma,
+            #                docsizes=docsizes,docUTset=ids,topic_ids=topic_ids),doc_batches))
+            pool.terminate()
+            make_t += time() - make_t0
+            django.db.connections.close_all()
+
+            add_t0 = time()
+            values_list = [item for sublist in values_list for item in sublist]
+            pool = Pool(processes=ps)
+            pool.map(insert_many,values_list)
+            pool.terminate()
+            add_t += time() - add_t0
+            gc.collect()
+            sys.stdout.flush()
 
 
 

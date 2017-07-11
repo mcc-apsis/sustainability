@@ -125,13 +125,13 @@ def bulk_create_par(dts):
 
 def main():
 
-    sleep(18000)
+    sleep(57600)
     print("finished sleeping")
     # The number of topics
     try:
         qid = int(sys.argv[1])
     except:
-        qid = 894
+        qid = 1366
     # The n in ngram
     try:
         ng = int(sys.argv[2])
