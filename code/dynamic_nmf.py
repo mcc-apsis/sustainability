@@ -130,12 +130,21 @@ def proc_docs(docs):
     return [abstracts, docsizes, ids, stoplist]
 
 def main():
-    qid = 1253
-    K = 100
+    try:
+        qid = int(sys.argv[1])
+    except:
+        qid = 1457
+    # The n in ngram
+    try:
+        K = int(sys.argv[2])
+        print(K)
+    except:
+        K = 100
+
     n_features = 50000
     n_samples = 1000
     ng = 1
-    yrange=list(range(1990,2017))
+    yrange=list(range(1990,2016))
 
 
 

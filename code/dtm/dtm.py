@@ -11,6 +11,7 @@ from functools import partial
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from scipy.sparse import csr_matrix, find
 import numpy as np
+from django.utils import timezone
 
 
 # Import django stuff
@@ -120,7 +121,9 @@ def main():
         sys.exit()
 
     #sleep(7200)
-    for K in [40,60,80,100]:
+    Ks = [100,150,200,250]
+    #Ks = [10,20]
+    for K in Ks:
         #K = 80
         n_features=20000
 
@@ -141,6 +144,7 @@ def main():
         os.mkdir('dtm-input')
 
         yrange = list(range(1990,2017))
+        #yrange = list(range(2010,2012))
         #yrange = list(range(1990,1997))
 
         docs = Doc.objects.filter(
@@ -153,7 +157,7 @@ def main():
 
         #########################
         ## Get the features now
-        print("Extracting tf-idf features for NMF...")
+        print("Extracting word features...")
         vectorizer = CountVectorizer(max_df=0.95, min_df=10,
                                            max_features=n_features,
                                            ngram_range=(1,1),
@@ -302,6 +306,10 @@ def main():
             add_t += time() - add_t0
             gc.collect()
             sys.stdout.flush()
+
+        stats = RunStats.objects.get(run_id=run_id)
+        stats.last_update=timezone.now()
+        stats.save()
 
 
 
