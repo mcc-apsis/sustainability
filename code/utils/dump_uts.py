@@ -14,7 +14,7 @@ qid = 1457
 
 q = Query.objects.get(pk=qid)
 
-docs = Doc.objects.filter(query=q).values_list('UT',flat=True)
+docs = Doc.objects.filter(query=q).distinct('UT').values_list('UT',flat=True)
 
 with open("data/1457.txt","w") as f:
     for d in docs:
