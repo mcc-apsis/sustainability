@@ -40,6 +40,8 @@ giant = g.clusters().giant().simplify()
 
 igraph.summary(giant)
 
+igraph.plot(giant)
+
 
 dendogram = giant.community_fastgreedy()
 
