@@ -40,7 +40,9 @@ giant = g.clusters().giant().simplify()
 
 igraph.summary(giant)
 
-igraph.plot(giant)
+igraph.plot(giant,"connected_network.pdf")
+
+igraph.plot(g,"network.pdf")
 
 
 dendogram = giant.community_fastgreedy()
