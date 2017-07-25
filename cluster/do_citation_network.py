@@ -10,7 +10,7 @@ def load_sparse_csr(filename):
     return csr_matrix((  loader['data'], loader['indices'], loader['indptr']),
                          shape = loader['shape'])
 
-m = load_sparse_csr("1457_citations.npz")
+m = load_sparse_csr("1457_citations_lutz.npz")
 
 #subg = list(range(10000))
 #m = m.tocsr()[subg, :].tocsc()[:, subg]
@@ -19,9 +19,17 @@ nodes = m.shape[0]
 
 print(nodes)
 
-with open("1457_nodelabels.txt") as f:
+ids = []
+titles = []
+
+with open("1457_nodelabels_lutz.txt") as f:
     c = csv.reader(f,delimiter='\t')
-    ids = [r[1] for r in c]
+    for r in c:
+        i = r[1]
+        t = r[0]
+        ids.append(i)
+        titles.append(t)
+        
 
 
 g = igraph.Graph()
@@ -35,6 +43,7 @@ g.add_edges(zip(mat[0],mat[1]))
 igraph.summary(g)
 
 g.vs["wosid"] = ids
+g.vs["title"] = titles
 
 giant = g.clusters().giant().simplify()
 
@@ -55,8 +64,9 @@ with open("output","w") as w:
     writer = csv.writer(w)
     for i in range(len(membership)):
         name = giant.vs["wosid"][i]
+        ti = giant.vs["title"][i]
         mem = membership[i]
-        writer.writerow([name,mem])
+        writer.writerow([name,ti,mem])
 
     
 
