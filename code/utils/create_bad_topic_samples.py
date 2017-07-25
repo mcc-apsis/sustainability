@@ -47,7 +47,8 @@ meds = WC.objects.filter(
     doc__query=1457
 ).distinct('text')
 
-meds = []
+mcats = ['Public, Environmental & Occupational Health','Medicine, General & Internal','Nutrition & Dietetics']
+meds = WC.objects.filter(text__in=mcats)
 for m in meds:
     mdocs = Doc.objects.filter(
         query=1457,
@@ -61,7 +62,7 @@ for m in meds:
 
 
 clusters = [6,11,12,15,17,23,27,34,39,67]
-
+clusters = []
 ntitle = "fast_greedy_weighted_2017_07_19"
 
 for c in clusters:

@@ -16,6 +16,10 @@ q = Query.objects.get(pk=qid)
 
 docs = Doc.objects.filter(query=q).distinct('UT').values_list('UT',flat=True)
 
+print(len(docs))
+
+sys.exit()
+
 with open("data/1457.txt","w") as f:
     for d in docs:
         f.write(d)
