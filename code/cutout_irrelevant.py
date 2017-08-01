@@ -50,8 +50,8 @@ bad_health = health.exclude(
     docbigram__bigram__pos=-1,
     docbigram__bigram__stem2__in=gbg_1s
 )
-print(good_health.distinct().count())
-print(bad_health.distinct().count())
+# print(good_health.distinct().count())
+# print(bad_health.distinct().count())
 
 
 bdocs = docs.filter(wc__oecd_fos_text='Economics and business')
@@ -80,24 +80,24 @@ good_business = bdocs.exclude(
     docbigram__bigram__pos=-1,
     docbigram__bigram__stem2__in=badbg_1s
 )
-print(good_business.distinct().count())
-print(bad_business.distinct().count())
+# print(good_business.distinct().count())
+# print(bad_business.distinct().count())
 
-t = Tag(
-    query=q,
-    title="good_business_5"
-)
-t.save()
-for d in good_business:
-    d.tag.add(t)
-
-t = Tag(
-    query=q,
-    title="bad_business_5"
-)
-t.save()
-for d in bad_business:
-    d.tag.add(t)
+# t = Tag(
+#     query=q,
+#     title="good_business_5"
+# )
+# t.save()
+# for d in good_business:
+#     d.tag.add(t)
+#
+# t = Tag(
+#     query=q,
+#     title="bad_business_5"
+# )
+# t.save()
+# for d in bad_business:
+#     d.tag.add(t)
 
 
 bad_ids = bad_business | bad_health
@@ -106,20 +106,22 @@ bad_ids = list(bad_ids.distinct().values_list('UT',flat=True))
 good_docs = docs.exclude(UT__in=bad_ids)
 bad_docs = docs.filter(UT__in=bad_ids)
 
-t = Tag(
-    query=q,
-    title="good_docs_3"
-)
-t.save()
+# t = Tag(
+#     query=q,
+#     title="good_docs_3"
+# )
+# t.save()
 for d in good_docs:
-    d.tag.add(t)
+    # d.tag.add(t)
     d.relevant=True
     d.save()
 
-t = Tag(
-    query=q,
-    title="bad_docs_3"
-)
-t.save()
+# t = Tag(
+#     query=q,
+#     title="bad_docs_3"
+# )
+# t.save()
 for d in bad_docs:
-    d.tag.add(t)
+    # d.tag.add(t)
+    d.relevant=False
+    d.save()

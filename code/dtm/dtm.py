@@ -12,10 +12,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from scipy.sparse import csr_matrix, find
 import numpy as np
 from django.utils import timezone
+from django.core import management
+
 
 
 # Import django stuff
-sys.path.append('/home/galm/software/tmv/BasicBrowser/')
+sys.path.append('/home/galm/software/django/tmv/BasicBrowser')
 
 # sys.path.append('/home/max/Desktop/django/BasicBrowser/')
 import db as db
@@ -150,6 +152,7 @@ def main():
         docs = Doc.objects.filter(
             query=Query.objects.get(pk=qid),
             content__iregex='\w',
+            relevant=True,
             PY__in=yrange
         ).order_by('PY')
 
@@ -222,7 +225,7 @@ def main():
             "--top_chain_var=0.005",
             "--alpha=0.01",
             "--lda_sequence_min_iter=10",
-            "--lda_sequence_max_iter=200",
+            "--lda_sequence_max_iter=20",
             "--lda_max_em_iter=20"
         ]).wait()
 
@@ -310,6 +313,8 @@ def main():
         stats = RunStats.objects.get(run_id=run_id)
         stats.last_update=timezone.now()
         stats.save()
+        management.call_command('update_run',run_id)
+
 
 
 

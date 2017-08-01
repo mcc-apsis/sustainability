@@ -1,6 +1,6 @@
 import pickle, string, numpy, getopt, sys, random, time, re, pprint, gc, resource
 import pandas as pd
-import onlineldavb, scrapeWoS, gensim, nltk, subprocess, psycopg2, math
+import nltk, subprocess, psycopg2, math
 from nltk.stem import SnowballStemmer
 from nltk import word_tokenize
 from multiprocess import Pool
@@ -12,12 +12,14 @@ from time import time
 from django.utils import timezone
 from scipy.sparse import csr_matrix, find
 import numpy as np
+from django.core import management
+
 
 
 sys.stdout.flush()
 
 # import file for easy access to browser database
-sys.path.append('/home/galm/software/tmv/BasicBrowser/')
+sys.path.append('/home/galm/software/django/tmv/BasicBrowser')
 
 # sys.path.append('/home/max/Desktop/django/BasicBrowser/')
 import db as db
@@ -37,7 +39,7 @@ def flatten(container):
 def f_gamma(docs,gamma,docsizes,docUTset,topic_ids):
     dts = []
     for d in docs:
-        if gamma[2][d] > 0.005:
+        if gamma[2][d] > 0:
             dt = DocTopic(
                 doc_id = docUTset[gamma[0][d]],
                 topic_id = topic_ids[gamma[1][d]],
@@ -51,7 +53,7 @@ def f_gamma(docs,gamma,docsizes,docUTset,topic_ids):
 def f_gamma2(docs,gamma,docsizes,docUTset,topic_ids):
     vl = []
     for d in docs:
-        if gamma[2][d] > 0.001:
+        if gamma[2][d] > 0.01:
             dt = (
                 docUTset[gamma[0][d]],
                 topic_ids[gamma[1][d]],
@@ -144,7 +146,7 @@ def main():
     n_features = 50000
     n_samples = 1000
     ng = 1
-    yrange=list(range(1990,2016))
+    yrange=list(range(1990,2017))
 
 
 
@@ -157,11 +159,12 @@ def main():
     i = 0
     #ndocs = Doc.objects.filter(query=qid,content__iregex='\w').count()
     #avdocs = ndocs/len(yrange)
-    avdocs = Doc.objects.filter(query=qid,content__iregex='\w',PY=2016).count()
+    docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w')
+    avdocs = docs.filter(PY=2016).count()
     print(avdocs)
     for y in yrange:
 
-        docs = Doc.objects.filter(query=qid,content__iregex='\w',PY=y)
+        docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w',PY=y)
 
         ydocs = docs.count()
         print("\n#######################")
@@ -174,7 +177,7 @@ def main():
         #############################################
         # Use tf-idf features for NMF.
         print("Extracting tf-idf features for NMF...")
-        tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=10,
+        tfidf_vectorizer = TfidfVectorizer(max_df=0.97, min_df=2,
                                            max_features=n_features,
                                            ngram_range=(ng,ng),
                                            tokenizer=snowball_stemmer(),
@@ -290,7 +293,6 @@ def main():
 
     K = K
 
-    DynamicTopic.objects.filter(run_id=run_id).delete()
 
     tops = Topic.objects.filter(run_id=run_id)
     terms = Term.objects.all()
@@ -304,9 +306,8 @@ def main():
     wt = 0
     for topic in tops:
         tts = TopicTerm.objects.filter(
-            topic=topic, run_id=run_id,
-            score__gt=0.00001
-        ).order_by('-score')[:150]
+            topic=topic
+        ).order_by('-score')[:20]
         for tt in tts:
             B[wt,tt.term.id] = tt.score
         wt+=1
@@ -314,7 +315,8 @@ def main():
     col_sum = np.sum(B,axis=0)
     vocab_ids = np.flatnonzero(col_sum)
 
-
+    # we only want the columns where there are at least some
+    # topic-term values
     B = B[:,vocab_ids]
 
 
@@ -333,7 +335,11 @@ def main():
         dtopic.save()
         dtopics.append(dtopic)
 
-    dtopic_ids = list(DynamicTopic.objects.filter(run_id=run_id).values_list('id',flat=True))
+    dtopic_ids = list(
+        DynamicTopic.objects.filter(
+            run_id=run_id
+        ).values_list('id',flat=True)
+    )
 
     print(dtopic_ids)
 
@@ -391,6 +397,7 @@ def main():
     stats = RunStats.objects.get(run_id=run_id)
     stats.last_update=timezone.now()
     stats.save()
+    management.call_command('update_run',run_id)
 
 
 

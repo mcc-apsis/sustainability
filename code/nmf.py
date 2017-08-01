@@ -20,9 +20,6 @@
 
 import pickle, string, numpy, getopt, sys, random, time, re, pprint, gc, resource
 import pandas as pd
-import onlineldavb
-import scrapeWoS
-import gensim
 import nltk
 from nltk.stem import SnowballStemmer
 from nltk import word_tokenize
@@ -39,13 +36,15 @@ from scipy.sparse import csr_matrix, find
 import numpy as np
 import psycopg2
 import subprocess
+from django.core import management
+
 
 #conn = psycopg2.connect("dbname=tmv_app user=tmv password=topicmodels")
 
 sys.stdout.flush()
 
 # import file for easy access to browser database
-sys.path.append('/home/galm/software/tmv/BasicBrowser/')
+sys.path.append('/home/galm/software/django/tmv/BasicBrowser')
 
 # sys.path.append('/home/max/Desktop/django/BasicBrowser/')
 import db as db
@@ -79,7 +78,7 @@ def f_gamma(docs,gamma,docsizes,docUTset,topic_ids):
 def f_gamma2(docs,gamma,docsizes,docUTset,topic_ids):
     vl = []
     for d in docs:
-        if gamma[2][d] > 0.001:
+        if gamma[2][d] > 0:
             dt = (
                 docUTset[gamma[0][d]],
                 topic_ids[gamma[1][d]],
@@ -166,6 +165,7 @@ def main():
 
     #docs = Doc.objects.filter(query=893,content__iregex='\w').values('UT','title','content')
     docs = Doc.objects.filter(query=qid,content__iregex='\w')
+    docs = docs.filter(relevant=True)
 
     docs = docs#.values('UT','content')
     if limit is not False:
@@ -216,6 +216,7 @@ def main():
     Ks = [10,20,30,40,110,120,130,140,150]
     Ks = [160,170,180,190,200]
     Ks = [220,240,260,280]
+    Ks = [200, 180, 160]
     for i in range(len(Ks)):
         if i > 500:
             recreate_indexes = True
@@ -259,12 +260,13 @@ def main():
               % (n_samples, n_features))
         t0 = time()
         nmf = NMF(n_components=K, random_state=1,
-                  alpha=.1, l1_ratio=.5).fit(tfidf)
+                  alpha=.001, l1_ratio=.5).fit(tfidf)
         print("done in %0.3fs." % (time() - t0))
 
 
         print("Adding topicterms to db")
         t0 = time()
+        print(csr_matrix(nmf.components_))
         ldalambda = find(csr_matrix(nmf.components_))
         topics = range(len(ldalambda[0]))
         tts = []
@@ -273,7 +275,7 @@ def main():
         tts.append(pool.map(partial(f_lambda, m=ldalambda,
                         v_ids=vocab_ids,t_ids=topic_ids),topics))
         pool.terminate()
-        tts = flatten(tts)
+        tts = list(flatten(tts))
         gc.collect()
         sys.stdout.flush()
         django.db.connections.close_all()
@@ -283,7 +285,10 @@ def main():
 
         t0 = time()
         print("making sparse matrix")
-        gamma =  find(csr_matrix(nmf.transform(tfidf)))
+
+        m = csr_matrix(nmf.transform(tfidf))
+        m = m[m > 0.001]
+        gamma =  find(m)
 
         # Make the gamma longer to test memory performance with big sets
         #gamma = [np.concatenate([x,x,x,x,x,x,x,x,x,x]) for x in gamma]
@@ -399,10 +404,8 @@ def main():
         stats.query=Query.objects.get(pk=qid)
         stats.save()
         django.db.connections.close_all()
-    subprocess.Popen(["python3",
-        "/home/galm/software/tmv/BasicBrowser/update_all_topics.py",
-        str(frun-1)
-    ]).wait()
+        management.call_command('update_run',run_id)
+
 
 if __name__ == '__main__':
     t0 = time()
