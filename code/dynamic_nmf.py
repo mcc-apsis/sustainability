@@ -146,7 +146,7 @@ def main():
     n_features = 50000
     n_samples = 1000
     ng = 1
-    yrange=list(range(1990,2017))
+    yrange=list(range(1990,2016))
 
 
 
@@ -307,7 +307,7 @@ def main():
     for topic in tops:
         tts = TopicTerm.objects.filter(
             topic=topic
-        ).order_by('-score')[:20]
+        ).order_by('-score')[:50]
         for tt in tts:
             B[wt,tt.term.id] = tt.score
         wt+=1
@@ -369,7 +369,7 @@ def main():
             if gamma[topic][dtopic] > 0:
                 tdt = TopicDTopic(
                     topic = tops[topic],
-                    dynamictopic = dtopics[dtopic],
+                    dynamictopic_id = dtopic_ids[dtopic],
                     score = gamma[topic][dtopic]
                 )
                 tdt.save()

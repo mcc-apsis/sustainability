@@ -37,6 +37,8 @@ edge_n = len(mat[0])
 
 g.add_edges(zip(mat[0],mat[1]))
 
+g.es["weight"] = mat[2]
+
 igraph.summary(g)
 
 g.vs["wosid"] = ids
@@ -59,7 +61,9 @@ igraph.plot(giant,"connected_network_bc.pdf", **visual_style)
 #igraph.plot(g,"network.pdf", **visual_style)
 
 
-dendogram = giant.community_fastgreedy()
+dendogram = giant.community_fastgreedy(
+    weights = giant.es["weight"]
+)
 
 clusters = dendogram.as_clustering()
 

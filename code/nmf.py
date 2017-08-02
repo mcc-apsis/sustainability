@@ -287,8 +287,10 @@ def main():
         print("making sparse matrix")
 
         m = csr_matrix(nmf.transform(tfidf))
-        m = m[m > 0.001]
+        #m = m[m > 0.001]
+        m = m.multiply(m > 0.001)
         gamma =  find(m)
+
 
         # Make the gamma longer to test memory performance with big sets
         #gamma = [np.concatenate([x,x,x,x,x,x,x,x,x,x]) for x in gamma]
