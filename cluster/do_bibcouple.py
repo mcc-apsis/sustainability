@@ -12,6 +12,8 @@ def load_sparse_csr(filename):
 
 m = load_sparse_csr("1457_bc_lutz_3.npz")
 
+m = tril(m)
+
 #subg = list(range(10000))
 #m = m.tocsr()[subg, :].tocsc()[:, subg]
 
@@ -39,12 +41,14 @@ g.add_edges(zip(mat[0],mat[1]))
 
 g.es["weight"] = mat[2]
 
-igraph.summary(g)
+
 
 g.vs["wosid"] = ids
 g.vs["title"] = titles
 
-giant = g.clusters().giant().simplify()
+igraph.summary(g)
+
+giant = g.clusters().giant()#.simplify()
 
 igraph.summary(giant)
 
@@ -58,7 +62,7 @@ visual_style["edge_color"] = "rgba(1,1,1,0.1)"
 
 igraph.plot(giant,"connected_network_bc.pdf", **visual_style)
 
-#igraph.plot(g,"network.pdf", **visual_style)
+#igraph.plot(g,"network_bc.pdf", **visual_style)
 
 
 dendogram = giant.community_fastgreedy(
