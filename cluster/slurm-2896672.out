@@ -1,0 +1,9 @@
+172557
+IGRAPH U--- 172557 528296 -- 
+IGRAPH U--- 119734 523731 -- 
++ attr: title (v), wosid (v)
+172557
+IGRAPH U-W- 172557 1667608 -- 
++ attr: title (v), wosid (v), weight (e)
+IGRAPH U-W- 96411 1619693 -- 
++ attr: title (v), wosid (v), weight (e)

@@ -1,0 +1,13 @@
+172557
+IGRAPH U--- 172557 528296 -- 
+IGRAPH U--- 119734 523731 -- 
++ attr: title (v), wosid (v)
+172557
+IGRAPH U-W- 172557 3194775 -- 
++ attr: weight (e)
+IGRAPH U--- 96411 1523282 -- 
++ attr: title (v), wosid (v)
+Traceback (most recent call last):
+  File "do_bibcouple.py", line 65, in <module>
+    weights = giant.es["weight"]
+KeyError: 'Attribute does not exist'
