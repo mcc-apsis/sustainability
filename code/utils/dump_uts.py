@@ -21,7 +21,7 @@ docs = Doc.objects.filter(
 
 print(len(docs))
 
-sys.exit()
+
 
 with open("data/1457_filtered.txt","w") as f:
     for d in docs:
