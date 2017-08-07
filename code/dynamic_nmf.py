@@ -146,7 +146,7 @@ def main():
     n_features = 50000
     n_samples = 1000
     ng = 1
-    yrange=list(range(1990,2016))
+    yrange=list(range(1990,2017))
 
 
 
@@ -170,6 +170,8 @@ def main():
         print("\n#######################")
         print("IN YEAR {}: {} docs".format(y,ydocs))
         k = round(math.log(ydocs)/math.log(avdocs)*K)
+        if k > ydocs:
+            k = round(ydocs*0.2)
         print("esimating {} topics...".format(k))
 
         abstracts, docsizes, ids, stoplist = proc_docs(docs)
@@ -289,6 +291,9 @@ def main():
 
         i+=1
 
+        stat.error = stat.error + nmf.reconstruction_err_
+        stat.errortype = "Frobenius"
+
     ## After all the years have been run, update the dtops
 
     K = K
@@ -394,9 +399,10 @@ def main():
     #         topic.primary_dtopic = dt
     #         topic.save()
 
-    stats = RunStats.objects.get(run_id=run_id)
-    stats.last_update=timezone.now()
-    stats.save()
+    stat.error = stat.error + nmf.reconstruction_err_
+    stat.errortype = "Frobenius"
+    stat.last_update=timezone.now()
+    stat.save()
     management.call_command('update_run',run_id)
 
 

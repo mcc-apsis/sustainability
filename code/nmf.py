@@ -216,7 +216,7 @@ def main():
     Ks = [10,20,30,40,110,120,130,140,150]
     Ks = [160,170,180,190,200]
     Ks = [220,240,260,280]
-    Ks = [200, 180, 160]
+    Ks = [200, 180, 160, 140, 220]
     for i in range(len(Ks)):
         if i > 500:
             recreate_indexes = True
@@ -260,7 +260,7 @@ def main():
               % (n_samples, n_features))
         t0 = time()
         nmf = NMF(n_components=K, random_state=1,
-                  alpha=.001, l1_ratio=.5).fit(tfidf)
+                  alpha=.0001, l1_ratio=.5).fit(tfidf)
         print("done in %0.3fs." % (time() - t0))
 
 
