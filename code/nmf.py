@@ -220,6 +220,8 @@ def main():
 
     Ks = [25, 50,75,100,125,150]
 
+    Ks = [50, 60, 70, 80, 90, 120]
+
     for i in range(len(Ks)):
         if i > 500:
             recreate_indexes = True
