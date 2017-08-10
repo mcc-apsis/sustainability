@@ -165,7 +165,7 @@ def main():
 
     #docs = Doc.objects.filter(query=893,content__iregex='\w').values('UT','title','content')
     docs = Doc.objects.filter(query=qid,content__iregex='\w')
-    docs = docs.filter(relevant=True)
+    docs = docs.filter(relevant=True, PY=2016)
 
     docs = docs#.values('UT','content')
     if limit is not False:
@@ -217,6 +217,9 @@ def main():
     Ks = [160,170,180,190,200]
     Ks = [220,240,260,280]
     Ks = [200, 180, 160, 140, 220]
+
+    Ks = [25, 50,75,100,125,150]
+
     for i in range(len(Ks)):
         if i > 500:
             recreate_indexes = True
