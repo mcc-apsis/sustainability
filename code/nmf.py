@@ -165,7 +165,7 @@ def main():
 
     #docs = Doc.objects.filter(query=893,content__iregex='\w').values('UT','title','content')
     docs = Doc.objects.filter(query=qid,content__iregex='\w')
-    docs = docs.filter(relevant=True, PY=2016)
+    docs = docs.filter(relevant=True)
 
     docs = docs#.values('UT','content')
     if limit is not False:
@@ -223,6 +223,8 @@ def main():
     Ks = [50, 60, 70, 80, 90, 120]
 
     Ks = [130]
+
+    Ks = [30,35,40,45,50,55,60,65,70,90]
 
     for i in range(len(Ks)):
         if i > 500:
