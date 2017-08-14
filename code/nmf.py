@@ -133,10 +133,10 @@ def main():
         qid = 1457
     # The n in ngram
     try:
-        ng = int(sys.argv[2])
-        print(ng)
+        Ks = [int(x.strip()) for x in sys.argv[2].split()]
+        print(Ks)
     except:
-        ng = 1
+        Ks = []
     try:
         n_features = int(sys.argv[3])
         print(n_features)
@@ -147,10 +147,13 @@ def main():
     except:
         limit = False
 
+    ng = 1
     print("###################################\nStarting \
     NMF.py with ngrams={} and n_features={}".format(ng,n_features))
 
     n_samples = 1000
+
+    print(Ks)
 
     #############################################
     ## STOPWORDS
@@ -165,7 +168,6 @@ def main():
 
     #docs = Doc.objects.filter(query=893,content__iregex='\w').values('UT','title','content')
     docs = Doc.objects.filter(query=qid,content__iregex='\w')
-    docs = docs.filter(relevant=True)
 
     docs = docs#.values('UT','content')
     if limit is not False:
@@ -208,23 +210,6 @@ def main():
     vocab = tfidf_vectorizer.get_feature_names()
 
     print(len(vocab))
-
-    Ks = [15,16,17,18,19,20,21,21,23,24]
-    Ks = list(range(15,35))
-    Ks = [21,22,23]
-    Ks = [50,60,70,80,90,100]
-    Ks = [10,20,30,40,110,120,130,140,150]
-    Ks = [160,170,180,190,200]
-    Ks = [220,240,260,280]
-    Ks = [200, 180, 160, 140, 220]
-
-    Ks = [25, 50,75,100,125,150]
-
-    Ks = [50, 60, 70, 80, 90, 120]
-
-    Ks = [130]
-
-    Ks = [30,35,40,45,50,55,60,65,70,90]
 
     for i in range(len(Ks)):
         if i > 500:
