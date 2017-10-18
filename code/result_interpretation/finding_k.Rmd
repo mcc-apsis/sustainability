@@ -1,0 +1,89 @@
+---
+title: "Fitting Topic Numbers"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(stargazer)
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+
+```
+
+
+
+```{r cars}
+df <- data.frame(p = c(5,15,20,26),n=c(952,3260,8254,21937))
+df$k <- c(50,65,90,120)
+
+m1 <- lm(k~n+p,df)
+m2 <- lm(k~n,df)
+m3 <- lm(k~poly(n,2),df)
+m4 <- lm(k~log(n),df)
+
+
+```
+
+```{r}
+p <- ggplot(df, aes(n,k)) +
+  geom_point() +
+  ylim(0,150) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust=0.5)
+  )
+  
+
+p1 <- p + stat_smooth(method="lm") + ggtitle("n")
+
+p2 <- p + stat_smooth(method="lm", formula = y ~ poly(x,2)) +
+  ggtitle("n^2")
+
+p3 <- p + stat_smooth(method="lm", formula = y ~ log(x)) +
+  ggtitle("log(n)")
+
+multiplot(p1, p2, p3, cols=3)
+
+```
+
+```{r results='asis'}
+stargazer(m1,m2,m3,m4, header=FALSE)
+```
+
