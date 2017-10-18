@@ -131,6 +131,16 @@ def proc_docs(docs):
 
     return [abstracts, docsizes, ids, stoplist]
 
+
+def predict(x):
+    a = 43.78
+    b1 = 0.006912
+    b2 = -0.0000001567
+    x_hat = a+b1*x+b2*x*x
+    if x_hat > x:
+        x_hat=x/2
+    return(int(round(x_hat)))
+
 def main():
     try:
         qid = int(sys.argv[1])
@@ -169,9 +179,7 @@ def main():
         ydocs = docs.count()
         print("\n#######################")
         print("IN YEAR {}: {} docs".format(y,ydocs))
-        k = round(math.log(ydocs)/math.log(avdocs)*K)
-        if k > ydocs:
-            k = round(ydocs*0.2)
+        k = predict(ydocs)
         print("esimating {} topics...".format(k))
 
         abstracts, docsizes, ids, stoplist = proc_docs(docs)
@@ -216,7 +224,7 @@ def main():
               % (n_samples, n_features))
         t0 = time()
         nmf = NMF(n_components=k, random_state=1,
-                  alpha=.1, l1_ratio=.5).fit(tfidf)
+                  alpha=.0001, l1_ratio=.5).fit(tfidf)
         print("done in %0.3fs." % (time() - t0))
 
 
