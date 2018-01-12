@@ -110,7 +110,7 @@ class snowball_stemmer(object):
     def __init__(self):
         self.stemmer = SnowballStemmer("english")
     def __call__(self, doc):
-        return [self.stemmer.stem(t) if "sustainab" not in t else t for t in tokenize(doc)]
+        return [self.stemmer.stem(t) if "sustainab" not in t.lower() else t for t in tokenize(doc)]
 
 def proc_docs(docs):
     stoplist = set(nltk.corpus.stopwords.words("english"))
@@ -157,6 +157,7 @@ def main():
     n_features = 50000
     n_samples = 1000
     ng = 1
+    #yrange=list(range(1990,2000))
     yrange=list(range(1990,2017))
 
 
@@ -170,7 +171,7 @@ def main():
     #ndocs = Doc.objects.filter(query=qid,content__iregex='\w').count()
     #avdocs = ndocs/len(yrange)
     docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w')
-    avdocs = docs.filter(PY=2016).count()
+    avdocs = docs.filter(PY=max(yrange)).count()
     print(avdocs)
 
     # for ar in AR.objects.filter(ar__gt=0):
