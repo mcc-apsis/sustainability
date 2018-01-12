@@ -110,7 +110,7 @@ class snowball_stemmer(object):
     def __init__(self):
         self.stemmer = SnowballStemmer("english")
     def __call__(self, doc):
-        return [self.stemmer.stem(t) for t in tokenize(doc)]
+        return [self.stemmer.stem(t) if "sustainab" not in t else t for t in tokenize(doc)]
 
 def proc_docs(docs):
     stoplist = set(nltk.corpus.stopwords.words("english"))
@@ -125,9 +125,10 @@ def proc_docs(docs):
     abstracts = [re.split("\([C-c]\) [1-2][0-9]{3} Elsevier",x.content)[0] for x in docs.iterator()]
     abstracts = [x.split("Published by Elsevier")[0] for x in abstracts]
     abstracts = [x.split("Copyright (C)")[0] for x in abstracts]
+    abstracts = [x.replace("sustainable development","sustainabledevelopment") for x in abstracts]
     abstracts = [re.split("\. \(C\) [1-2][0-9]{3} ",x)[0] for x in abstracts]
     docsizes = [len(x) for x in abstracts]
-    ids = [x.UT for x in docs.iterator()]
+    ids = [x.id for x in docs.iterator()]
 
     return [abstracts, docsizes, ids, stoplist]
 
@@ -159,7 +160,6 @@ def main():
     yrange=list(range(1990,2017))
 
 
-
     global run_id
     run_id = db.init(n_features,ng)
     stat = RunStats.objects.get(run_id=run_id)
@@ -172,9 +172,15 @@ def main():
     docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w')
     avdocs = docs.filter(PY=2016).count()
     print(avdocs)
-    for y in yrange:
 
-        docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w',PY=y)
+    # for ar in AR.objects.filter(ar__gt=0):
+    #     ys = range(ar.start,ar.end+1)
+    #     y = ar.ar
+
+    for y in yrange:
+        ys = [y]
+
+        docs = Doc.objects.filter(query=qid,relevant=True,content__iregex='\w',PY__in=ys)
 
         ydocs = docs.count()
         print("\n#######################")
@@ -390,9 +396,9 @@ def main():
     ## Calculate the primary dtopic for each topic
     for t in tops:
         try:
-            t.primary_dtopic = TopicDTopic.objects.filter(
+            t.primary_dtopic.add(TopicDTopic.objects.filter(
                 topic=t
-            ).order_by('-score').first().dynamictopic
+            ).order_by('-score').first().dynamictopic)
             t.save()
         except:
             pass
