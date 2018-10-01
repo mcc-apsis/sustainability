@@ -4,3 +4,4 @@ dtm-input/*
 networks/*
 nohup.out
 .Rproj.user
+*pycache*

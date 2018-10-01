@@ -77,9 +77,11 @@ def plot_model_accuracy(model,x_test,y_test,ax,threshold=0.1,inv=False):
 
     y_predicted = np.where(prob_y_true > threshold,1,0)
 
-    from sklearn.metrics import precision_score, recall_score
+    from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
     p = precision_score(y_test,y_predicted)
     r = recall_score(y_test,y_predicted)
+    a = accuracy_score(y_test,y_predicted)
+    f = f1_score(y_test,y_predicted)
 
     savings = len(y_predicted[y_predicted < threshold])
 
@@ -88,17 +90,31 @@ def plot_model_accuracy(model,x_test,y_test,ax,threshold=0.1,inv=False):
     #print("precision = {}".format(p))
     #print("recall = {}".format(r))
 
+    y_test = np.array(y_test)
 
-    ax.scatter(
-        np.arange(len(prob_y_true)),
-        prob_y_true[order],
-        s=1
-    )
-    ax.scatter(
-        np.arange(len(prob_y_true)),
-        y_test[order] + np.random.randn(len(y_test))*0.02,
-        s=1
-    )
+    flip = False
+    if flip:
+        ax.scatter(
+            y=np.arange(len(prob_y_true)),
+            x=prob_y_true[order],
+            s=1
+        )
+        ax.scatter(
+            y=np.arange(len(prob_y_true)),
+            x=y_test[order] + np.random.randn(len(y_test))*0.02,
+            s=1
+        )
+    else:
+        ax.scatter(
+            np.arange(len(prob_y_true)),
+            prob_y_true[order],
+            s=1
+        )
+        ax.scatter(
+            np.arange(len(prob_y_true)),
+            y_test[order] + np.random.randn(len(y_test))*0.02,
+            s=1
+        )
     if inv:
         prob_y_false = prob_y_false[order]
         ax.scatter(
@@ -110,7 +126,47 @@ def plot_model_accuracy(model,x_test,y_test,ax,threshold=0.1,inv=False):
         savings/len(y_predicted),
         p,r
     ))
-    ax.axvline(cutoff)
+    ax.set_title("Accuracy={:0.2f}, F1 score={:0.2f}\nPrecision={:0.2f}, Recall={:0.2f}".format(
+        a,f,
+        p,r
+    ))
+    if flip:
+        ax.axhline(cutoff)
+        ax.axvline(0.5,color="black",linestyle="--")
+    else:
+        ax.axvline(cutoff)
+        ax.axhline(0.5,color="black",linestyle="--",lw=1)
+        ax.set_xlabel('Predicted relevance ranking')
+        ax.set_ylabel('Relevance [Orange], Probability [Blue]')
+
+        r = cutoff + (ax.get_xlim()[1]-cutoff)/2
+        l = cutoff/2
+
+        tb = {
+            "facecolor":"red","alpha":0.2,
+        }
+
+        ax.text(
+            r,0.25,
+            "FPs\n{:.1%}".format(np.sum(y_test-y_predicted==-1)/len(y_test)),
+            ha="center",va="center",fontsize=7,bbox=tb
+        )
+        ax.text(
+            l,0.75,
+            "FNs\n{:.1%}".format(np.sum(y_test-y_predicted==1)/len(y_test)),
+            ha="center",va="center",fontsize=7,bbox=tb
+        )
+        ax.text(
+            r,0.75,
+            "TPs\n{:.1%}".format(np.sum(y_test+y_predicted==2)/len(y_test)),
+            ha="center",va="center",fontsize=7,bbox=tb
+        )
+        ax.text(
+            l,0.25,
+            "TNs\n{:.1%}".format(np.sum(y_test+y_predicted==0)/len(y_test)),
+            ha="center",va="center",fontsize=7,bbox=tb
+        )
+
 
 
 def precision_recall_plot(model,x_test,y_test, ax, frac):
@@ -361,31 +417,30 @@ def plot_confusion_matrix(cm, classes,
 
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
-    #plt.text(
-    #    1,-0.25,"P: {:.2f}".format(precision_score(y[test.index],y_pred)),
-    #    ha="center",va="center",
-    #    #color="white" if cm[1, 0] > thresh else "black"
-    #)
-    #plt.arrow(1.2,1.2,0,-1.5,width=0.03,length_includes_head=True, shape="right")
-    #plt.text(
-    #    -0.25,1,"R: {:.2f}".format(recall_score(y[test.index],y_pred)),
-    #    ha="center",va="center",
-    #    #color="white" if cm[1, 0] > thresh else "black"
-    #)
-    #plt.arrow(1.2,1.2,-1.5,0,width=0.03,length_includes_head=True, shape="right")
     plt.text(
         1,-0.52,"P: {:.2f}".format(cm[1,1] / np.sum(cm[:,1])),
         ha="center",va="bottom",
     )
     plt.text(
-        1.52,1,"R: {:.2f}".format(cnf[1,1] / np.sum(cnf[1])),
+        1.52,1,"R: {:.2f}".format(cm[1,1] / np.sum(cm[1])),
         ha="left",va="center",
     )
+    plt.text(
+        1.52,-0.52, "A: {:.2f}".format((cm[0,0] + cm[1,1] / np.sum(cm))),
+        ha="left",va="bottom"
+    )
 
-fig, ax = plt.subplots()
-
-print(precision_score(y[test.index],y_pred))
-
-plot_confusion_matrix(cnf,classes=[0,1])
-
-fig.tight_layout()
+def sus_tokenize(st):
+    words = st.split()
+    stopwords = set(sw.words('english'))
+    for i,w in enumerate(words):
+        if "sustainab" in w:
+            for d in [-1,1]:
+                for nwi in range(1,4):
+                    try:
+                        nw = words[i+nwi*d]
+                        if nw not in stopwords and len(nw) > 3:
+                            yield "{}_{}".format(nw,d)
+                            break
+                    except:
+                        pass
