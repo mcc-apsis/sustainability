@@ -5,3 +5,4 @@ networks/*
 nohup.out
 .Rproj.user
 *pycache*
+learning/w2v/*
