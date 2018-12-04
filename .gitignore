@@ -6,3 +6,4 @@ nohup.out
 .Rproj.user
 *pycache*
 learning/w2v/*
+*word2vec.model*
